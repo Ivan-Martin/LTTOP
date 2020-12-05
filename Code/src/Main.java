@@ -12,6 +12,8 @@ public class Main {
     }
 
     public static void execute (Instance ins){
+        Constructive cons = new Constructive(ins);
+        Solution sol = cons.construct();
 
     }
 

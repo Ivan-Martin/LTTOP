@@ -2,20 +2,24 @@ import java.io.*;
 
 public class Instance {
 
-    int points;
-    int [][] pointLocations;
-    int paths;
-    int [] maxTime;
-    int [] scores;
+    private int points;
+    private int [][] pointLocations;
+    private int paths;
+    private int [] maxTime;
+    private int [] scores;
 
     public Instance (String filepath) {
+        //Try reading and parsing the file to instance details.
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(filepath)));
             points = Integer.parseInt(br.readLine().split(" ")[0]);
             paths = Integer.parseInt(br.readLine().split(" ")[0]);
+            maxTime = new int[points];
             for (int i = 0; i < paths; i++){
                 maxTime[i] = Integer.parseInt(br.readLine());
             }
+            pointLocations = new int [points][2];
+            scores = new int [points];
             for (int i = 0; i < points; i++){
                 String [] splitted = br.readLine().split(" ");
                 pointLocations[i][0] = Integer.parseInt(splitted[0]);
@@ -32,7 +36,23 @@ public class Instance {
 
     }
 
-    public double distance_between_points (int pointA, int pointB) {
+    public int getPoints() {
+        return points;
+    }
+
+    public int getPaths() {
+        return paths;
+    }
+
+    public double getMaxTime (int vehicleId){
+        return maxTime[vehicleId];
+    }
+
+    public int [] getPointLocation (int id) {
+        return pointLocations[id];
+    }
+
+    public double distanceBetweenPoints (int pointA, int pointB) {
         double x1 = pointLocations[pointA][0];
         double y1 = pointLocations[pointB][0];
         double x2 = pointLocations[pointA][1];
