@@ -25,18 +25,31 @@ public class Solution {
         }
         double totalCost = 0.0;
         for (int i = 0; i < paths.length; i++){
-            double vehicleCost = 0.0;
-            int previous = 0;
-            for (Integer point : paths[i]){
-                vehicleCost += ins.distanceBetweenPoints(previous, point);
-                previous = point;
-            }
-            vehicleCost += ins.distanceBetweenPoints(previous, 0);
-            costPerVehicle[i] = vehicleCost;
-            totalCost += vehicleCost;
+            totalCost += evaluateVehicle(i);
         }
         this.totalCost = totalCost;
         return totalCost;
+    }
+
+    public double evaluateVehicle (int vehicleId){
+        double vehicleCost = 0.0;
+        int previous = 0;
+        for (Integer point : paths[vehicleId]){
+            vehicleCost += ins.distanceBetweenPoints(previous, point);
+            previous = point;
+        }
+        vehicleCost += ins.distanceBetweenPoints(previous, 0);
+        costPerVehicle[vehicleId] = vehicleCost;
+        return vehicleCost;
+    }
+
+    public LinkedList <Integer> getVehiclePath (int vehicleId){
+        return paths[vehicleId];
+    }
+
+    public void setVehiclePath (int vehicleId, LinkedList <Integer> path){
+        paths[vehicleId] = path;
+        totalCost = 0.0;
     }
 
     public void addPoint (int point, int vehicle){
