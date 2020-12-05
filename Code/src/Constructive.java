@@ -24,11 +24,11 @@ public class Constructive {
         while (!remainingPoints.isEmpty()){
             int bestPoint = -1;
             int bestVehicle = -1;
-            double minDistance = Double.MAX_VALUE;
+            double minDistance = Double.POSITIVE_INFINITY;
             for (int point : remainingPoints){
                 for (int i = 0; i < ins.getPaths(); i++){
                     double cost = ins.distanceBetweenPoints(point, vehiclePositions[i]);
-                    if (minDistance > cost && vehicleTimes[i] + minDistance < ins.getMaxTime(i)){
+                    if (minDistance > cost && vehicleTimes[i] + cost < ins.getMaxTime(i)){
                         minDistance = cost;
                         bestPoint = point;
                         bestVehicle = i;

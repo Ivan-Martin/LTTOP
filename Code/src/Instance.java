@@ -3,27 +3,28 @@ import java.io.*;
 public class Instance {
 
     private int points;
-    private int [][] pointLocations;
+    private double [][] pointLocations;
     private int paths;
-    private int [] maxTime;
+    private double [] maxTime;
     private int [] scores;
 
     public Instance (String filepath) {
         //Try reading and parsing the file to instance details.
         try {
             BufferedReader br = new BufferedReader(new FileReader(new File(filepath)));
-            points = Integer.parseInt(br.readLine().split(" ")[0]);
-            paths = Integer.parseInt(br.readLine().split(" ")[0]);
-            maxTime = new int[points];
+            points = Integer.parseInt(br.readLine().split(" ")[1]);
+            paths = Integer.parseInt(br.readLine().split(" ")[1]);
+            maxTime = new double[paths];
+            String [] read = br.readLine().split(" ");
             for (int i = 0; i < paths; i++){
-                maxTime[i] = Integer.parseInt(br.readLine());
+                maxTime[i] = Double.parseDouble(read[1])*75;
             }
-            pointLocations = new int [points][2];
+            pointLocations = new double [points][2];
             scores = new int [points];
             for (int i = 0; i < points; i++){
-                String [] splitted = br.readLine().split(" ");
-                pointLocations[i][0] = Integer.parseInt(splitted[0]);
-                pointLocations[i][1] = Integer.parseInt(splitted[1]);
+                String [] splitted = br.readLine().split("\t");
+                pointLocations[i][0] = Double.parseDouble(splitted[0]);
+                pointLocations[i][1] = Double.parseDouble(splitted[1]);
                 scores[i] = Integer.parseInt(splitted[2]);
             }
         } catch (FileNotFoundException e) {
@@ -48,7 +49,7 @@ public class Instance {
         return maxTime[vehicleId];
     }
 
-    public int [] getPointLocation (int id) {
+    public double [] getPointLocation (int id) {
         return pointLocations[id];
     }
 
