@@ -1,28 +1,60 @@
+import java.util.LinkedList;
+import java.util.Random;
+
 public class BasicVNS {
 
     private Instance ins;
+    private Random rand;
 
     public BasicVNS (Instance ins){
         this.ins = ins;
+        this.rand = new Random();
     }
 
     public void VNS (Solution sol, LocalSearch ls, int kMax) {
         int k = 1;
         while (k < kMax){
             Solution copy = new Solution(sol);
-            shake(copy);
-            ls.search(sol);
-            k = checkNeighbourhood(sol, copy, k);
+            shake(copy, k); //copy = S'
+            ls.search(copy); //copy = S''
+            k = checkNeighbourhood(sol, copy, k); //sol = S, copy = S''
+            if (k == 1) {
+                //Only happens if k returns to 1 by finding a better solution.
+                sol = copy;
+            }
         }
     }
 
-    private void shake (Solution sol){
+    private void shake (Solution sol, int k){
+        /*
+          Selects a random point from a Vehicle, removes it from its path
+          And adds that point to another vehicle's path.
+          Complexity = O(1).
+         */
+        int totalVehicles = ins.getPaths();
+        for (int i = 0; i < k; i++){
+            int randomVehicleId = rand.nextInt(totalVehicles);
+            LinkedList<Integer> randomPath = sol.getVehiclePath(randomVehicleId);
+            int randomPoint = randomPath.remove(rand.nextInt(randomPath.size()));
+            //Remove randomly a point assigned to a randomly selected vehicle's path.
 
+            int randomVehicleId2 = rand.nextInt(totalVehicles-1);
+            //Select another random vehicle.
+            if (randomVehicleId2 == randomVehicleId){
+                //If randomly selected same vehicle, set the 2nd random vehicle to the last one
+                //(Last vehicle couldn't possibly be selected as random was launched [0, (total-1)]
+                //This ensures the two random vehicles are not the same at O(1) complexity.
+                randomVehicleId2 = totalVehicles-1;
+            }
+            sol.getVehiclePath(randomVehicleId2).add(randomPoint);
+            //Add to the second vehicle selected, the point removed from 1st vehicle route.
+            //Doesn't matter the position in the route, as local search will work that.
+        }
     }
 
     private int checkNeighbourhood(Solution sol, Solution copy, int k) {
         double solValue = sol.evaluateCompleteSolution();
-        double copyValue = sol.evaluateCompleteSolution();
+        double copyValue = copy.evaluateCompleteSolution();
         if (compareDoubles(solValue, copyValue)){
             //Values are equal, we've arrived at same solution. Increase k.
             return k+1;
