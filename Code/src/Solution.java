@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Solution {
@@ -15,6 +16,17 @@ public class Solution {
         }
         totalCost = 0;
         costPerVehicle = new double [ins.getPaths()];
+    }
+
+    public Solution (Solution s){
+        //Copy constructor
+        this.ins = s.ins;
+        this.totalCost = s.totalCost;
+        this.costPerVehicle = Arrays.copyOf(s.costPerVehicle, s.costPerVehicle.length);
+        this.paths = new LinkedList[s.paths.length];
+        for (int i = 0; i < s.paths.length; i++){
+            this.paths[i] = new LinkedList<>(s.paths[i]);
+        }
     }
 
     public double evaluateCompleteSolution () {

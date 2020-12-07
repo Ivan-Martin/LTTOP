@@ -8,38 +8,43 @@ public class LocalSearch {
         this.ins = ins;
     }
 
-    public Solution search (Solution sol) {
+    public void search (Solution sol) {
         boolean flag = true;
         while (flag){
             flag = false; //Continues searching until completes a cycle without changes.
             //First improvement approach.
-            //1st step: Check all possible movements type 1
-            //Movement type 1 => Change the order of two points in the same vehicle route.
             int i = 0;
             while (i < ins.getPaths()){
-                flag = false;
+                flag = checkVehiclePath(i, sol);
                 //Checks every vehicle separately.
                 //Only continues with next vehicle when previous one cannot be lowered.
-                LinkedList<Integer> originalPath = sol.getVehiclePath(i);
-                LinkedList<Integer> path = new LinkedList <> (originalPath);
-                double originalCost = sol.evaluateVehicle(i);
-                for (int point : originalPath){
-                    for (int j = 0; j < path.size(); j++){
-                        path.removeFirstOccurrence(point);
-                        path.add(j, point);
-                        sol.setVehiclePath(i, path);
-                        if (originalCost > sol.evaluateVehicle(i)){
-                            flag = true;
-                            break;
-                        }
-                    }
-                    if (flag) break;
-                }
                 if (!flag){
                     i++;
                 }
             }
+            
         }
-        return sol;
+    }
+
+    private boolean checkVehiclePath (int vehicleId, Solution sol){
+        //1st step: Check all possible movements type 1
+        //Movement type 1 => Change the order of two points in the same vehicle route.
+        boolean foundBest = false;
+        LinkedList<Integer> originalPath = sol.getVehiclePath(vehicleId);
+        LinkedList<Integer> path = new LinkedList <> (originalPath);
+        double originalCost = sol.evaluateVehicle(vehicleId);
+        for (int point : originalPath){
+            for (int j = 0; j < path.size(); j++){
+                path.removeFirstOccurrence(point);
+                path.add(j, point);
+                sol.setVehiclePath(vehicleId, path);
+                if (originalCost > sol.evaluateVehicle(vehicleId)){
+                    foundBest = true;
+                    break;
+                }
+            }
+            if (foundBest) break;
+        }
+        return foundBest;
     }
 }

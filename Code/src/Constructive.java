@@ -28,7 +28,8 @@ public class Constructive {
             for (int point : remainingPoints){
                 for (int i = 0; i < ins.getPaths(); i++){
                     double cost = ins.distanceBetweenPoints(point, vehiclePositions[i]);
-                    if (minDistance > cost && vehicleTimes[i] + cost < ins.getMaxTime(i)){
+                    double returnCost = ins.distanceBetweenPoints(point, 0);
+                    if (minDistance > cost && vehicleTimes[i] + cost + returnCost < ins.getMaxTime(i)){
                         minDistance = cost;
                         bestPoint = point;
                         bestVehicle = i;
