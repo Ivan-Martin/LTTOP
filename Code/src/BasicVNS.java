@@ -11,7 +11,7 @@ public class BasicVNS {
         this.rand = new Random();
     }
 
-    public void VNS (Solution sol, LocalSearch ls, int kMax) {
+    public Solution VNS (Solution sol, LocalSearch ls, int kMax) {
         int k = 1;
         while (k < kMax){
             Solution copy = new Solution(sol);
@@ -23,6 +23,7 @@ public class BasicVNS {
                 sol = copy;
             }
         }
+        return sol;
     }
 
     private void shake (Solution sol, int k){
@@ -35,6 +36,10 @@ public class BasicVNS {
         for (int i = 0; i < k; i++){
             int randomVehicleId = rand.nextInt(totalVehicles);
             LinkedList<Integer> randomPath = sol.getVehiclePath(randomVehicleId);
+            if (randomPath.size() == 0){
+                i--;
+                continue;
+            }
             int randomPoint = randomPath.remove(rand.nextInt(randomPath.size()));
             //Remove randomly a point assigned to a randomly selected vehicle's path.
 
