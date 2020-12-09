@@ -30,11 +30,6 @@ public class Solution {
     }
 
     public double evaluateCompleteSolution () {
-        if (this.totalCost > 0){
-            return this.totalCost;
-            //Stores the previous evaluation made.
-            //If there weren't any changes made, returns the previous evaluation.
-        }
         double totalCost = 0.0;
         for (int i = 0; i < paths.length; i++){
             totalCost += evaluateVehicle(i);

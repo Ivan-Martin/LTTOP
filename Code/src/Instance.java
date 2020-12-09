@@ -18,7 +18,7 @@ public class Instance {
             maxTime = new double[paths];
             String [] read = br.readLine().split(" ");
             for (int i = 0; i < paths; i++){
-                maxTime[i] = (Double.parseDouble(read[1])*75) + ((Math.random()-0.5)*100.0);
+                maxTime[i] = (Double.parseDouble(read[1])*250) + ((Math.random()-0.5)*200.0);
             }
             System.out.println(Arrays.toString(maxTime));
             pointLocations = new double [points][2];
