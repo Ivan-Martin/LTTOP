@@ -16,7 +16,7 @@ public class BasicVNS {
         while (k < kMax){
             Solution copy = new Solution(sol);
             shake(copy, k); //copy = S'
-            ls.search(copy); //copy = S''
+            ls.search(copy, LocalSearch.SearchMode.INSERTION); //copy = S''
             k = checkNeighbourhood(sol, copy, k); //sol = S, copy = S''
             if (k == 1) {
                 //Only happens if k returns to 1 by finding a better solution.
@@ -51,9 +51,8 @@ public class BasicVNS {
                 //This ensures the two random vehicles are not the same at O(1) complexity.
                 randomVehicleId2 = totalVehicles-1;
             }
-            sol.getVehiclePath(randomVehicleId2).add(randomPoint);
-            //Add to the second vehicle selected, the point removed from 1st vehicle route.
-            //Doesn't matter the position in the route, as local search will work that.
+            sol.getVehiclePath(randomVehicleId2).add(rand.nextInt(sol.getVehiclePath(randomVehicleId2).size()), randomPoint);
+            //Add to the second vehicle selected, the point removed from 1st vehicle route, in a random Position.
         }
     }
 

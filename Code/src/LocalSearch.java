@@ -4,22 +4,28 @@ public class LocalSearch {
 
     private Instance ins;
 
+    public enum SearchMode {
+        INSERTION, INTERCHANGE, TWOOPT
+    }
+
     public LocalSearch (Instance ins){
         this.ins = ins;
     }
 
-    public void search (Solution sol) {
-        checkAllVehiclesPath(sol);
+    public void search (Solution sol, SearchMode mode) {
         checkFactibility(sol);
-        checkAllVehiclesPath(sol);
-        checkAllVehiclePoints(sol);
-        checkAllVehiclesPath(sol);
+        switch (mode){
+            case INSERTION -> insertionLocalSearch(sol);
+            case INTERCHANGE -> interchangeLocalSearch(sol);
+            //case TWOOPT -> twoOptLocalSearch(sol);
+        }
     }
 
-    private void checkAllVehiclesPath (Solution sol) {
+    private void insertionLocalSearch(Solution sol) {
         //Optimizes order of points in a path.
         boolean flag = true;
         while (flag){
+
             flag = false; //Continues searching until completes a cycle without changes.
             //First improvement approach.
             int i = 0;
@@ -35,7 +41,7 @@ public class LocalSearch {
         }
     }
 
-    private void checkAllVehiclePoints (Solution sol) {
+    private void interchangeLocalSearch(Solution sol) {
         //Optimizes point assignments to a vehicle
         boolean flag = true;
         while (flag){
@@ -156,8 +162,8 @@ public class LocalSearch {
                         maxTime = time;
                     }
                 }
-                remainingPoints.add(pointRemoval);
-                path.removeFirstOccurrence(pointRemoval);
+                remainingPoints.add(path.get(pointRemoval));
+                path.remove(pointRemoval);
                 totalCost = sol.evaluateVehicle(i);
             }
         }

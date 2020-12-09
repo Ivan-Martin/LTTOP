@@ -65,4 +65,18 @@ public class Solution {
         //Sets totalCost to 0.0 indicating that it must be evaluated again
         //As changes were made to the solution
     }
+
+    public String toString () {
+        String result = "[";
+        int i = 0;
+        for (LinkedList<Integer> p : paths){
+            result += "V" + i + ": " + p.toString() + ", ";
+            i++;
+        }
+        result += System.lineSeparator();
+        for (int j = 0; j < ins.getPaths(); j++){
+            result += "Vev" + j + ": " + evaluateVehicle(j) + ", ";
+        }
+        return result;
+    }
 }
