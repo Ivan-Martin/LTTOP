@@ -20,7 +20,7 @@ public class Main {
         GeneralVNS vns = new GeneralVNS(ins);
         System.out.println("Searched solution: " + sol.evaluateCompleteSolution());
         Solution best = vns.VNS(sol, ls, 5);
-        System.out.println("BVNS solution: " + best.evaluateCompleteSolution());
+        System.out.println("GVNS solution: " + best.evaluateCompleteSolution());
         System.out.println(best.toString());
     }
 
