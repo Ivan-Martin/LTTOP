@@ -122,41 +122,49 @@ public class LocalSearch {
         * Worst point is removed and allocated to another path, possibly removing other points
         * Process continues removing and adding points until a factible solution is found.
          */
-        LinkedList <Integer []> remainingPoints = new LinkedList<>();
-        HashSet <Integer> movedPoints = new HashSet<>();
-        removePoints(sol, remainingPoints, movedPoints);
+        HashSet <Integer> [] exploredPossibilities = new HashSet [ins.getPoints()];
+        for (int i = 0; i < ins.getPoints(); i++) exploredPossibilities[i] = new HashSet<>();
+        LinkedList <Integer> remainingPoints = new LinkedList<>();
+        //HashSet <Integer> movedPoints = new HashSet<>();
+
+        removePoints(sol, remainingPoints, exploredPossibilities);
         while (!remainingPoints.isEmpty()){
-            addPoints(sol, remainingPoints);
-            removePoints(sol, remainingPoints, movedPoints);
+
+            addPoints(sol, remainingPoints, exploredPossibilities);
+            removePoints(sol, remainingPoints, exploredPossibilities);
         }
+
 
     }
 
-    private void addPoints(Solution sol, LinkedList<Integer []> remainingPoints) {
+    private void addPoints(Solution sol, LinkedList<Integer> remainingPoints, HashSet <Integer> [] exploredPossibilities) {
         while (!remainingPoints.isEmpty()){
-            Integer [] point = remainingPoints.pop();
+            int point = remainingPoints.pop();
             int bestPosition = -1;
             int bestVehicle = -1;
             double minCost = Double.POSITIVE_INFINITY;
             for (int i = 0; i < ins.getPaths(); i++){
-                if (i == point[1]) continue;
+                if (exploredPossibilities[point].contains(i)) continue;
                 LinkedList <Integer> path = sol.getVehiclePath(i);
                 double actualValue = sol.evaluateVehicle(i);
                 for (int j = 0; j <= path.size(); j++){
-                    path.add(j, point[0]);
+                    path.add(j, point);
                     double newValue = sol.evaluateVehicle(i);
                     if ((actualValue - newValue) < minCost){
                         bestPosition = j;
                         bestVehicle = i;
                     }
-                    path.removeFirstOccurrence(point[0]);
+                    path.removeFirstOccurrence(point);
                 }
             }
-            sol.getVehiclePath(bestVehicle).add(bestPosition, point[0]);
+
+            sol.getVehiclePath(bestVehicle).add(bestPosition, point);
+            exploredPossibilities[point].add(bestVehicle);
         }
     }
 
-    private void removePoints(Solution sol, LinkedList <Integer []> remainingPoints, HashSet <Integer> movedPoints) {
+    private void removePoints(Solution sol, LinkedList <Integer> remainingPoints, HashSet <Integer> [] exploredPossibilities) {
+
         for (int i = 0; i < ins.getPaths(); i++){
             double totalCost = sol.evaluateVehicle(i);
             while (totalCost > ins.getMaxTime(i)){
@@ -166,16 +174,17 @@ public class LocalSearch {
                 int pointRemoval = -1;
                 for (int j = 0; j < path.size(); j++){
                     double time = calculateTimeRemoval(path, j) * -1;
-                    if (time > maxTime && !movedPoints.contains(path.get(j))){
-                        pointRemoval = j;
+                    if (time > maxTime && exploredPossibilities[path.get(j)].size() != ins.getPaths()){
+                        //To remove a package, its explored possibilities should not be the total of available vehicles.
+                        pointRemoval = path.get(j);
                         maxTime = time;
                     }
                 }
-                if (pointRemoval == -1) continue;
-                movedPoints.add(path.get(pointRemoval));
-                Integer [] array = {path.get(pointRemoval), i};
-                remainingPoints.add(array);
-                path.remove(pointRemoval);
+                //if (pointRemoval == -1) continue;
+                //movedPoints.add(path.get(pointRemoval));
+
+                remainingPoints.add(pointRemoval);
+                path.removeFirstOccurrence(pointRemoval);
                 totalCost = sol.evaluateVehicle(i);
             }
         }
