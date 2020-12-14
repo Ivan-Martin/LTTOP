@@ -4,7 +4,7 @@ public class Main {
 
     public static void main (String [] args){
         //String path = "OriginalInstances/Instances_G";
-        String path = "NewInstances/Instances_G";
+        String path = "NewInstances/Instances_A";
         File directory = new File(path);
         for (File f : directory.listFiles()){
             Instance i = new Instance(f.getPath());
@@ -18,11 +18,12 @@ public class Main {
         System.out.println("Constructed solution: " + sol.evaluateCompleteSolution());
         LocalSearch ls = new LocalSearch(ins);
         ls.search(sol, LocalSearch.SearchMode.INSERTION);
-        GeneralVNS vns = new GeneralVNS(ins);
+        ParallelVNS vns = new ParallelVNS(ins, 10);
         System.out.println("Searched solution: " + sol.evaluateCompleteSolution());
         Solution best = vns.VNS(sol, ls, 5);
-        System.out.println("GVNS solution: " + best.evaluateCompleteSolution());
+        System.out.println("PVNS solution: " + best.evaluateCompleteSolution());
         System.out.println(best.toString());
+
     }
 
 }
