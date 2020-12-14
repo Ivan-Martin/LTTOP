@@ -25,10 +25,10 @@ public class GeneralVNS {
                         ls.search(s2, LocalSearch.SearchMode.INSERTION);
                         break;
                     case 1:
-                        ls.search(s2, LocalSearch.SearchMode.INTERCHANGE);
+                        ls.search(s2, LocalSearch.SearchMode.TWOOPT);
                         break;
                     case 2:
-                        ls.search(s2, LocalSearch.SearchMode.TWOOPT);
+                        ls.search(s2, LocalSearch.SearchMode.INTERCHANGE);
                         break;
                 }
                 l = checkNeighbourhood(s1, s2, l);
@@ -38,7 +38,7 @@ public class GeneralVNS {
             k = checkNeighbourhood(s0, s1, k);
             if (k == 0) s0 = s1;
             //System.out.println("k = " + k);
-            System.out.println(s0.getVehiclePath(0).size() + " " + s0.getVehiclePath(1).size());
+
         }
 
         return s0;

@@ -22,7 +22,9 @@ public class LocalSearch {
             case INTERCHANGE:
                 interchangeLocalSearch(sol);
                 break;
-            //case TWOOPT -> twoOptLocalSearch(sol);
+            case TWOOPT:
+                twoOptLocalSearch(sol);
+                break;
         }
     }
 
@@ -169,6 +171,7 @@ public class LocalSearch {
                         maxTime = time;
                     }
                 }
+                if (pointRemoval == -1) continue;
                 movedPoints.add(path.get(pointRemoval));
                 Integer [] array = {path.get(pointRemoval), i};
                 remainingPoints.add(array);
@@ -225,5 +228,52 @@ public class LocalSearch {
                     + ins.distanceBetweenPoints(pointId, path.get(location))
                     - ins.distanceBetweenPoints(path.get(location - 1), path.get(location));
         }
+    }
+
+    private void twoOptLocalSearch (Solution sol){
+        //Optimizes point assignments to a vehicle
+        boolean flag = true;
+        while (flag){
+            flag = false; //Continues searching until completes a cycle without changes.
+            //First improvement approach.
+            int i = 0;
+            while (i < ins.getPaths()){
+                flag = twoOptVehicle(sol, i);
+                //Checks every vehicle separately.
+                //Only continues with next vehicle when previous one cannot be lowered.
+                if (!flag){
+                    i++;
+                }
+            }
+
+        }
+    }
+
+    private boolean twoOptVehicle(Solution sol, int vehicleId) {
+        LinkedList <Integer> path = sol.getVehiclePath(vehicleId);
+        double original_value = sol.evaluateVehicle(vehicleId);
+        boolean flag = false;
+        for (int i = 1; i <= path.size()-2; i++){
+            for (int j = i+1; j <= path.size()-1; j++){
+                LinkedList <Integer> newPath = twoOptSwap(path, i, j);
+                sol.setVehiclePath(vehicleId, newPath);
+                double newValue = sol.evaluateVehicle(vehicleId);
+                if (newValue < original_value) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) break;
+            else sol.setVehiclePath(vehicleId, path);
+        }
+        return flag;
+    }
+
+    private LinkedList <Integer> twoOptSwap (LinkedList <Integer> path, int start, int end){
+        LinkedList <Integer> newPath = new LinkedList<>();
+        for (int i = 0; i < start; i++) newPath.add(path.get(i));
+        for (int i = start; i <= end; i++) newPath.add(path.get(end-i+start));
+        for (int i = end; i < path.size(); i++) newPath.add(path.get(i));
+        return newPath;
     }
 }

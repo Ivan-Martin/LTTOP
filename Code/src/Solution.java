@@ -74,7 +74,7 @@ public class Solution {
             result += "V" + i + ": " + p.toString() + ", ";
             i++;
         }
-        result += System.lineSeparator();
+        result += "]" +  System.lineSeparator();
         for (int j = 0; j < ins.getPaths(); j++){
             result += "Vev" + j + ": " + evaluateVehicle(j) + ", ";
         }

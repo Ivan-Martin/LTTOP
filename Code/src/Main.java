@@ -14,14 +14,14 @@ public class Main {
     public static void execute (Instance ins){
         Constructive cons = new Constructive(ins);
         Solution sol = cons.construct();
-        System.out.println("Constructed solution: " + sol.evaluateCompleteSolution());
+        //System.out.println("Constructed solution: " + sol.evaluateCompleteSolution());
         LocalSearch ls = new LocalSearch(ins);
         ls.search(sol, LocalSearch.SearchMode.INSERTION);
         GeneralVNS vns = new GeneralVNS(ins);
-        System.out.println("Searched solution: " + sol.evaluateCompleteSolution());
+        //System.out.println("Searched solution: " + sol.evaluateCompleteSolution());
         Solution best = vns.VNS(sol, ls, 5);
         System.out.println("GVNS solution: " + best.evaluateCompleteSolution());
-        System.out.println(best.toString());
+        //System.out.println(best.toString());
     }
 
 }
