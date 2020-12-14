@@ -17,7 +17,7 @@ public class Main {
         System.out.println("Constructed solution: " + sol.evaluateCompleteSolution());
         LocalSearch ls = new LocalSearch(ins);
         ls.search(sol, LocalSearch.SearchMode.INSERTION);
-        BasicVNS vns = new BasicVNS(ins);
+        GeneralVNS vns = new GeneralVNS(ins);
         System.out.println("Searched solution: " + sol.evaluateCompleteSolution());
         Solution best = vns.VNS(sol, ls, 5);
         System.out.println("BVNS solution: " + best.evaluateCompleteSolution());

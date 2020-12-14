@@ -15,8 +15,12 @@ public class LocalSearch {
     public void search (Solution sol, SearchMode mode) {
         checkFactibility(sol);
         switch (mode){
-            case INSERTION -> insertionLocalSearch(sol);
-            case INTERCHANGE -> interchangeLocalSearch(sol);
+            case INSERTION:
+                insertionLocalSearch(sol);
+                break;
+            case INTERCHANGE:
+                interchangeLocalSearch(sol);
+                break;
             //case TWOOPT -> twoOptLocalSearch(sol);
         }
     }
@@ -175,6 +179,9 @@ public class LocalSearch {
         //Calculates time resulting of the removal of a point as such:
         //Two edge removals: previous <-> point <-> following
         //One edge addition: previous <-> following
+        if (path.size() == 1) {
+            return - ins.distanceBetweenPoints(0, path.get(0))*2;
+        }
         if (pointLocation == 0){
             return - ins.distanceBetweenPoints(path.get(0), 0)
                     - ins.distanceBetweenPoints(path.get(0), path.get(1))
@@ -194,6 +201,9 @@ public class LocalSearch {
         //Calculates time resulting of the addition of a point as such:
         //Two edge additions: previousLocation <-> point <-> location
         //One edge removal: previousLocation <-> location
+        if (path.size() == 0) {
+            return 2* ins.distanceBetweenPoints(0, pointId);
+        }
         if (location == 0){
             //Origin <-> point <-> path.get(0); Origin <-> path.get(0)
             return ins.distanceBetweenPoints(0, pointId)

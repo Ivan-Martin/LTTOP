@@ -39,6 +39,7 @@ public class Solution {
     }
 
     public double evaluateVehicle (int vehicleId){
+        if (paths[vehicleId].size() == 0) return 0.0;
         double vehicleCost = 0.0;
         int previous = 0;
         for (Integer point : paths[vehicleId]){
