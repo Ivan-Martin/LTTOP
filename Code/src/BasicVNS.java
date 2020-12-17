@@ -8,7 +8,7 @@ public class BasicVNS {
 
     public BasicVNS (Instance ins){
         this.ins = ins;
-        this.rand = new Random();
+        this.rand = new Random(24);
     }
 
     public Solution VNS (Solution sol, LocalSearch ls, int kMax) {
@@ -51,8 +51,13 @@ public class BasicVNS {
                 //This ensures the two random vehicles are not the same at O(1) complexity.
                 randomVehicleId2 = totalVehicles-1;
             }
-            sol.getVehiclePath(randomVehicleId2).add(rand.nextInt(sol.getVehiclePath(randomVehicleId2).size()), randomPoint);
-            //Add to the second vehicle selected, the point removed from 1st vehicle route, in a random Position.
+            if (sol.getVehiclePath(randomVehicleId2).size() == 0){
+                sol.getVehiclePath(randomVehicleId2).add(randomPoint);
+            } else {
+                sol.getVehiclePath(randomVehicleId2).add(rand.nextInt(sol.getVehiclePath(randomVehicleId2).size()), randomPoint);
+                //Add to the second vehicle selected, the point removed from 1st vehicle route, in a random Position.
+            }
+
         }
     }
 

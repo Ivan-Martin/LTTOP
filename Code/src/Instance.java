@@ -20,7 +20,7 @@ public class Instance {
             for (int i = 0; i < paths; i++){
                 maxTime[i] = Double.parseDouble(read[i+1]);
             }
-            System.out.println(Arrays.toString(maxTime));
+            //System.out.println(Arrays.toString(maxTime));
             pointLocations = new double [points][2];
             scores = new int [points];
             for (int i = 0; i < points; i++){

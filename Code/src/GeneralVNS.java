@@ -8,7 +8,7 @@ public class GeneralVNS {
 
     public GeneralVNS (Instance ins){
         this.ins = ins;
-        this.rand = new Random();
+        this.rand = new Random(24);
     }
 
     public Solution VNS (Solution s0, LocalSearch ls, int kMax) {

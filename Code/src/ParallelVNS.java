@@ -15,7 +15,7 @@ public class ParallelVNS {
 
     public ParallelVNS (Instance ins, int threadNumber){
         this.ins = ins;
-        rand = new Random();
+        rand = new Random(24);
         exec = Executors.newFixedThreadPool(threadNumber);
         this.threadNumber = threadNumber;
         latch = new CountDownLatch(threadNumber);
